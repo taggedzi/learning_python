@@ -3,7 +3,7 @@
 
 """
 For loops depend on the items they loop through being iterable.
-For an object to be iterable it must have a next method. In python 2 it is "next" in Python 2 it is "__next__"
+For an object to be iterable it must have a next method. In python 2 it is "next" in Python 3 it is "__next__"
 
 For many of these examples there may be better ways to perform the operation using something other
 than a for loop however, this file exists to show how to use for loops. So they will be used.
