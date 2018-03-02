@@ -44,8 +44,8 @@ else:
 
 
 # I know in this example we could skip the check for even with the IF, however
-# it was a quick an easy way to demonstrate a continue.
-separator("While loop with a break in it")
+# it was a quick and easy way to demonstrate a continue.
+separator("While loop with a break and a continue in it")
 index = 0
 while index <= 50:
     # Note if the index is below our continue statement... this becomes an infinite loop
