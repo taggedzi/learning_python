@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from lp_utils import separator
+from lp_utilities.separator import separator
 
 
 """
