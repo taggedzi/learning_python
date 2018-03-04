@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from lp_utils import separator
+from lp_utilities.separator import separator
 
 """
 For loops depend on the items they loop through being iterable.
@@ -8,13 +8,16 @@ For an object to be iterable it must have a next method. In python 2 it is "next
 
 For many of these examples there may be better ways to perform the operation using something other
 than a for loop however, this file exists to show how to use for loops. So they will be used.
+
+For more information on what an iterable object is
+* The Iterator Protocol - https://anandology.com/python-practice-book/iterators.html#the-iteration-protocol
 """
 
 separator("Print a range from 0 to 5")
 for i in range(0, 5):
     print("{}".format(i))
 
-separator( "Print the characters of a string one at a time, iterating through the string.")
+separator("Print the characters of a string one at a time, iterating through the string.")
 number = "654,321.123"
 for i in range(0, len(number)):
     print(number[i], end='')
