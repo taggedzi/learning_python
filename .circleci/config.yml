@@ -37,7 +37,7 @@ jobs:
           command: |
             . venv/bin/activate
             cd ~/learning_python/src/
-            python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
+            coverage run --rcfile=../coverage.cfg -m unittest
 
       - run:
           name: Generate coverage report
@@ -45,7 +45,7 @@ jobs:
             pwd
             . venv/bin/activate
             cd ~/learning_python/src/
-            python3 -m coverage html --rcfile=../coverage.cfg
+            coverage html --rcfile=../coverage.cfg
 
       - store_artifacts:
           path: /tmp/artifacts
