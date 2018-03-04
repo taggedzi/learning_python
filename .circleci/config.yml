@@ -35,12 +35,17 @@ jobs:
       - run:
           name: run tests
           command: |
-            cd ~/learning_python/src
+            . venv/bin/activate
+            cd src/
             python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
+
 
       - run:
           name: Generate coverage report
-          command: python3 -m coverage html --rcfile=../coverage.cfg
+          command: |
+            .venv/bin/activate
+            cd src/
+            python3 -m coverage html --rcfile=../coverage.cfg
           working_directory: ~/learning_python/src
 
       - store_artifacts:
