@@ -1,6 +1,7 @@
+import unittest
 import unittest.mock
 from unittest.mock import patch, call
-from src.attributes.builtins.abs import print_abs, abs_integer, abs_float, abs_complex, abs_string
+from src.attributes.builtins.abs import print_abs, abs_integer, abs_float, abs_complex, abs_string, main as abs_main
 
 
 class MyTestCase(unittest.TestCase):
@@ -69,7 +70,7 @@ class MyTestCase(unittest.TestCase):
     @patch('sys.stdout')
     @patch('src.attributes.builtins.abs.separator')
     @patch('src.attributes.builtins.abs.random_signed_complex')
-    def test_abs_float(self, mock_rand_complex, mock_sep, mock_stdout):
+    def test_abs_complex(self, mock_rand_complex, mock_sep, mock_stdout):
         mock_rand_complex.side_effect = [-5j, -1j, 0j, 1j, 5j, 100j]
 
         abs_complex()
@@ -96,6 +97,17 @@ class MyTestCase(unittest.TestCase):
                             call.write('The exception message is:'),
                             call.write("bad operand type for abs(): 'str'")]
         mock_stdout.assert_has_calls(expected_std_out, any_order=True)
+
+    @patch('src.attributes.builtins.abs.abs_integer')
+    @patch('src.attributes.builtins.abs.abs_float')
+    @patch('src.attributes.builtins.abs.abs_complex')
+    @patch('src.attributes.builtins.abs.abs_string')
+    def test_abs_main(self, mock_abs_string, mock_abs_complex, mock_abs_float, mock_abs_integer):
+        abs_main()
+        mock_abs_string.assert_called()
+        mock_abs_complex.assert_called()
+        mock_abs_float.assert_called()
+        mock_abs_integer.assert_called()
 
 
 if __name__ == '__main__':
