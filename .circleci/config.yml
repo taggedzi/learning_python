@@ -37,7 +37,7 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            coverage run --rcfile=../coverage.cfg -m unittest discover
+            python coverage run --rcfile=../coverage.cfg -m unittest discover
           working_directory: ~/learning_python/src
 
       - run:
