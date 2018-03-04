@@ -37,7 +37,7 @@ jobs:
           command: |
             . venv/bin/activate
             cd ~/learning_python/src/
-            coverage run --rcfile=../coverage.cfg -m unittest
+            coverage run --rcfile=../coverage.cfg -m unittest discover
 
       - run:
           name: Generate coverage report
