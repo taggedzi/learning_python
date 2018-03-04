@@ -4,7 +4,7 @@ from lp_utilities.separator import separator
 
 
 """
-The any() function is a simple test to see if any of the items in an iterable
+The any() function is a simple tests to see if any of the items in an iterable
 contain an element that evaluates to false.
 
 For more information on what an iterable object is

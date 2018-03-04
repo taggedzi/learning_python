@@ -1,6 +1,6 @@
 import unittest.mock
 from unittest.mock import patch, call
-from attributes.builtins.abs import print_abs, abs_integer, abs_float, abs_complex, abs_string
+from src.attributes.builtins.abs import print_abs, abs_integer, abs_float, abs_complex, abs_string
 
 
 class MyTestCase(unittest.TestCase):
@@ -29,8 +29,8 @@ class MyTestCase(unittest.TestCase):
         mock_stdout.assert_has_calls(expected, any_order=True)
 
     @patch('sys.stdout')
-    @patch('attributes.builtins.abs.separator')
-    @patch('attributes.builtins.abs.random_signed_integer')
+    @patch('src.attributes.builtins.abs.separator')
+    @patch('src.attributes.builtins.abs.random_signed_integer')
     def test_abs_integer(self, mock_rand_int, mock_sep, mock_stdout):
         mock_rand_int.side_effect = [-5, -1, 0, 1, 5, 100]
 
@@ -48,8 +48,8 @@ class MyTestCase(unittest.TestCase):
         mock_stdout.assert_has_calls(expected_std_out, any_order=True)
 
     @patch('sys.stdout')
-    @patch('attributes.builtins.abs.separator')
-    @patch('attributes.builtins.abs.random_signed_float')
+    @patch('src.attributes.builtins.abs.separator')
+    @patch('src.attributes.builtins.abs.random_signed_float')
     def test_abs_float(self, mock_rand_float, mock_sep, mock_stdout):
         mock_rand_float.side_effect = [-5.0, -1.0, 0.0, 1.0, 5.0, 100.2]
 
@@ -67,8 +67,8 @@ class MyTestCase(unittest.TestCase):
         mock_stdout.assert_has_calls(expected_std_out, any_order=True)
 
     @patch('sys.stdout')
-    @patch('attributes.builtins.abs.separator')
-    @patch('attributes.builtins.abs.random_signed_complex')
+    @patch('src.attributes.builtins.abs.separator')
+    @patch('src.attributes.builtins.abs.random_signed_complex')
     def test_abs_float(self, mock_rand_complex, mock_sep, mock_stdout):
         mock_rand_complex.side_effect = [-5j, -1j, 0j, 1j, 5j, 100j]
 
