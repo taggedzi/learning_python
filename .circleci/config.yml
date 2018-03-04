@@ -34,15 +34,15 @@ jobs:
 
       - run:
           name: run tests
-          command:|
+          command: |
             . venv/bin/activate
-            coverage run --rcfile=../coverage.cfg -m unittest discover
+            coverage run --rcfile=coverage.cfg -m unittest discover
 
       - run:
           name: Generate coverage report
           command: |
             . venv/bin/activate
-            coverage html --rcfile=../coverage.cfg
+            coverage html --rcfile=coverage.cfg
 
       - store_artifacts:
           path: /tmp/artifacts
