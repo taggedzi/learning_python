@@ -34,8 +34,9 @@ jobs:
 
       - run:
           name: run tests
-          command: python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
-          working_directory: ~/learning_python/src
+          command: |
+            cd ~/learning_python/src
+            python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
 
       - run:
           name: Generate coverage report
