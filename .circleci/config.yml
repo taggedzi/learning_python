@@ -34,17 +34,14 @@ jobs:
 
       - run:
           name: run tests
-          command: |
+          command:|
             . venv/bin/activate
-            cd ~/learning_python/src/
             coverage run --rcfile=../coverage.cfg -m unittest discover
 
       - run:
           name: Generate coverage report
           command: |
-            pwd
             . venv/bin/activate
-            cd ~/learning_python/src/
             coverage html --rcfile=../coverage.cfg
 
       - store_artifacts:
