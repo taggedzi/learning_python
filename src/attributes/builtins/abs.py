@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from lp_utilities.random_gen import random_signed_integer, random_signed_float, random_signed_complex
-from lp_utilities.separator import separator
+from src.lp_utilities.random_gen import random_signed_integer, random_signed_float, random_signed_complex
+from src.lp_utilities.separator import separator
 
 """
 The abs() function returns the the Mathematical absolute value of the input value if
