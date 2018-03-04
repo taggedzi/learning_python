@@ -39,7 +39,6 @@ jobs:
             cd ~/learning_python/src/
             python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
 
-
       - run:
           name: Generate coverage report
           command: |
