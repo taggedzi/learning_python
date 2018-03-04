@@ -36,15 +36,15 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            cd src/
+            cd ~/learning_python/src/
             python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
 
 
       - run:
           name: Generate coverage report
           command: |
-            .venv/bin/activate
-            cd src/
+            . venv/bin/activate
+            cd ~/learning_python/src/
             python3 -m coverage html --rcfile=../coverage.cfg
           working_directory: ~/learning_python/src
 
