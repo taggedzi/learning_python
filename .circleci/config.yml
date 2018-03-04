@@ -45,7 +45,6 @@ jobs:
             . venv/bin/activate
             cd ~/learning_python/src/
             python3 -m coverage html --rcfile=../coverage.cfg
-          working_directory: ~/learning_python/src
 
       - store_artifacts:
           path: /tmp/artifacts
