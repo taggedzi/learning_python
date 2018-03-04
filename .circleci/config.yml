@@ -25,7 +25,6 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -U pip setuptools virtualenv
             pip install -r requirements.txt
 
       - save_cache:
@@ -35,12 +34,12 @@ jobs:
 
       - run:
           name: run tests
-          command: python -m coverage run --rcfile=../coverage.cfg -m unittest discover
+          command: python3 -m coverage run --rcfile=../coverage.cfg -m unittest discover
           working_directory: ~/learning_python/src
 
       - run:
           name: Generate coverage report
-          command: python -m coverage html --rcfile=../coverage.cfg
+          command: python3 -m coverage html --rcfile=../coverage.cfg
           working_directory: ~/learning_python/src
 
       - store_artifacts:
