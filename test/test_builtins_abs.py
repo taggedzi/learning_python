@@ -1,5 +1,5 @@
-import unittest
-from mock import call, patch
+import unittest.mock
+from unittest.mock import patch, call
 from attributes.builtins.abs import print_abs, abs_integer, abs_float, abs_complex, abs_string
 
 
