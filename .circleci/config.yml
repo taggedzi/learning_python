@@ -46,4 +46,6 @@ jobs:
       # https://nose.readthedocs.io
       - run:
           name: run tests
-          command: python -m unittest
+          command: |
+            pwd
+            python -m unittest
