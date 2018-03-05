@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from lp_utilities.separator import separator
+from src.lp_utilities.separator import separator
 
 
 """
@@ -39,6 +39,6 @@ def main():
     all_list_with_empty_element()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':  # pragma: no cover
     # execute only if run as a script
     main()
