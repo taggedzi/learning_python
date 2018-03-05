@@ -13,8 +13,3 @@ def random_signed_integer(magnitude):
 
 def random_signed_complex(magnitude):
     return complex(0, random.random() * random.randint(-magnitude, magnitude))
-
-
-if __name__ == "__main__":
-    # execute only if run as a script
-    main()
