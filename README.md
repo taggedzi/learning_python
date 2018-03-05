@@ -1,4 +1,4 @@
-CI:Master Branch: [![CircleCI](https://circleci.com/gh/taggedzi/learning_python/tree/master.svg?style=svg)](https://circleci.com/gh/taggedzi/learning_python/tree/master)
+[![CircleCI](https://circleci.com/gh/taggedzi/learning_python/tree/master.svg?style=svg)](https://circleci.com/gh/taggedzi/learning_python/tree/master)
 
 # learning_python
 This repo is dedicated to retaining program files, which are samples of concepts, and notes about programing concepts in the Python Programming language.
