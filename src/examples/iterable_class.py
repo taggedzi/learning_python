@@ -6,7 +6,7 @@ This is an example of what is required to make an object Iterable
 
 The object at minimum requires the '__iter__' method and the '__next__' method ('next' in python 2)
 
-The '__iter__' methed should return the object it self
+The '__iter__' method should return the object it self
 The '__next__' method should return the next item in the iteration and should raise a stop iteration exception when done
 
 For more information about The Iteration Protocol

@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from src.lp_utilities.random_gen import random_signed_integer, random_signed_float, random_signed_complex
+from src.lp_utilities.random_gen import random_signed_complex
+from src.lp_utilities.random_gen import random_signed_float
+from src.lp_utilities.random_gen import random_signed_integer
 from src.lp_utilities.separator import separator
 
 """

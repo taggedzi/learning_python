@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from lp_utilities.separator import separator
+from src.lp_utilities.separator import separator
 
 """
 For loops depend on the items they loop through being iterable.

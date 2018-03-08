@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import unittest
 import unittest.mock
 from unittest.mock import patch, call
+
 from src.attributes.builtins.abs import print_abs, abs_integer, abs_float, abs_complex, abs_string, main as abs_main
 
 
@@ -18,7 +18,8 @@ class TestAbs(unittest.TestCase):
     def test_print_abs_no_input(self):
         with self.assertRaises(TypeError) as context:
             print_abs()
-        self.assertTrue("print_abs() missing 2 required positional arguments: 'input_value' and 'output_value'" in context.exception.args[0])
+        self.assertTrue("print_abs() missing 2 required positional arguments: 'input_value' and 'output_value'" in
+                        context.exception.args[0])
 
     def test_print_abs_no_output_value(self):
         with self.assertRaises(Exception) as context:
