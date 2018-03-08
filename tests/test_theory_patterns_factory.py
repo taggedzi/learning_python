@@ -48,7 +48,6 @@ class TestFactoryPatternShapeFactory(unittest.TestCase):
             sf.get_shape('orange')
         self.assertTrue("Type must be circle or square." == context.exception.args[0])
 
-
     def test_circle(self):
         sf = ShapeFactory()
         ci = sf.get_shape('circle')

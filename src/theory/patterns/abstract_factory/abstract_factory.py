@@ -195,6 +195,6 @@ def main():
     print_vehicle_specs(lexus)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     # execute only if run as a script
     main()
