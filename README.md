@@ -10,4 +10,4 @@ I will try to break it into
 * Programming theory 'theory'
 * Programming examples 'examples'
 
-I will try to also break the folders down in some logical way, but I reserver the right to change it at any time.
+I will try to also break the folders down in some logical way, but I reserve the right to change it at any time.

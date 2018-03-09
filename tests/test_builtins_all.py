@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import unittest.mock
 import unittest
 from unittest.mock import Mock, patch, call
-from src.attributes.builtins.all import print_all, all_list_with_all_good_elements, all_list_with_empty_element, main as all_main
+
+from src.attributes.builtins.all import print_all, all_list_with_all_good_elements, all_list_with_empty_element, \
+    main as all_main
 
 
 class TestAll(unittest.TestCase):

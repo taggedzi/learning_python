@@ -12,6 +12,7 @@ class MotorCycleInterface(object):
     """
     Abstract Motorcycle Class
     """
+
     def __init__(self):
         self.wheels = 2
         self.vehicle_type = "Motor Cycle"
@@ -25,6 +26,7 @@ class CarInterface(object):
     """
     Abstract Car Class
     """
+
     def __init__(self):
         self.wheels = 4
         self.vehicle_type = "Automobile"
@@ -38,6 +40,7 @@ class HarleyDavidson(MotorCycleInterface):
     """
     Concrete MotorCycle Class
     """
+
     def __init__(self):
         super(HarleyDavidson, self).__init__()
         self.mfg = "Harley Davidson"
@@ -55,6 +58,7 @@ class Honda(MotorCycleInterface):
     """
     Concrete MotorCycle Class
     """
+
     def __init__(self):
         super(Honda, self).__init__()
         self.mfg = "Honda"
@@ -72,6 +76,7 @@ class MercedezBenz(CarInterface):
     """
     Concrete Car Class
     """
+
     def __init__(self):
         super(MercedezBenz, self).__init__()
         self.mfg = "Mercedez-Benz"
@@ -89,6 +94,7 @@ class Lexus(CarInterface):
     """
     Concrete Car Class
     """
+
     def __init__(self):
         super(Lexus, self).__init__()
         self.mfg = "Lexus"
@@ -106,6 +112,7 @@ class VehicleFactoryInterface(object):
     """
     Abstract Factory Interface
     """
+
     def get_vehicle(self, brand): pass
 
 
@@ -113,6 +120,7 @@ class MotorCycleFactory(VehicleFactoryInterface):
     """
     Concrete Vehicle Factory
     """
+
     def get_vehicle(self, brand):
         if brand == "Harley Davidson":
             return HarleyDavidson()
@@ -125,6 +133,7 @@ class CarFactory(VehicleFactoryInterface):
     """
     Concrete Vehicle Factory
     """
+
     def get_vehicle(self, brand):
         if brand == "Mercedez-Benz":
             return MercedezBenz()
@@ -154,9 +163,9 @@ def set_vehicle_properties(type_, make, model, speed):
     once it has been returned from the factory.
     :param type_:  STR  Type of vehicle
     :param make:   STR  Manufacturer Name
-    :param model:  STR  Vechile model Name
+    :param model:  STR  Vehicle model Name
     :param speed:  INT  An integer indicating relative speed
-    :return:  vechile_class
+    :return:  vehicle_class
     """
     if type_ == "Motorcycle":
         vehicle_factory = MotorCycleFactory()

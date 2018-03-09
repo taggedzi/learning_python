@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
-from unittest.mock import Mock, patch, call
+from unittest.mock import patch, call
+
 from src.theory.patterns.factories.factory_pattern import ShapeInterface, Circle, Square, ShapeFactory, main as fp_main
 
 
@@ -78,7 +79,7 @@ class TestFactoryPatternMain(unittest.TestCase):
 
     @patch('sys.stdout')
     @patch('src.theory.patterns.factories.factory_pattern.ShapeFactory.get_shape')
-    def test_main_with_excpetion(self, mock_factory, mock_print):
+    def test_main_with_exception(self, mock_factory, mock_print):
         mock_factory.side_effect = [Square(), Circle(), TypeError('test')]
         fp_main()
         expected = [call.write('test')]
