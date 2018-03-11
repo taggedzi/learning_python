@@ -23,6 +23,7 @@ class CellPhone(object):
     Product. This is the final product that is made up of components, that
     are built on the fly.
     """
+
     def __init__(self):
         self.__mfg = None
         self.__model = None
@@ -225,11 +226,12 @@ class CellPhone(object):
         output += "Supported cellular bands: {cell.bands}\n".format(cell=self.cellular_module)
         output += "Battery: Capacity: {battery.storage_capacity} mAH; \n" \
                   "\tEstimated standby time: {standby_time} days, hours, minutes, seconds; \n" \
-                  "\tEstimated talk time: {talk_time} days, hours, minutes, seconds]\n".format(
-                    battery=self.battery, standby_time=self.passive_battery_duration,
-                    talk_time=self.active_battery_duration)
+                  "\tEstimated talk time: {talk_time} " \
+                  "days, hours, minutes, seconds;\n".format(battery=self.battery,
+                                                            standby_time=self.passive_battery_duration,
+                                                            talk_time=self.active_battery_duration)
         output += "Speakers response frequency: {speakers.response_frequency}\n".format(speakers=self.speakers)
-        output += "Screen resolution: {screen.width_pixels}x{screen.height_pixels} "\
+        output += "Screen resolution: {screen.width_pixels}x{screen.height_pixels} " \
                   "@ {screen.refresh_rate} hz\n".format(screen=self.screen)
         output += "External Dimensions: Height {shell.height} mm, Width {shell.width} mm, " \
                   "Depth {shell.depth} mm.\n".format(shell=self.external_shell)
@@ -254,6 +256,7 @@ class CircuitBoard(object):
     """
     Sub-component of a product highly configurable
     """
+
     def __init__(self, model, revision, active_current_draw, passive_current_draw, price):
         self.model = model
         self.revision = revision
@@ -274,6 +277,7 @@ class CellularModule(object):
     """
     Sub-component of a product highly configurable
     """
+
     def __init__(self, manufacturer, make, bands, active_current_draw, passive_current_draw, price):
         self.manufacturer = manufacturer
         self.make = make
@@ -296,6 +300,7 @@ class Battery(object):
     """
     Sub-component of a product highly configurable
     """
+
     def __init__(self, form_factor, battery_type, storage_capacity, charge_cycles, price):
         self.form_factor = form_factor
         self.battery_type = battery_type
@@ -317,6 +322,7 @@ class Speakers(object):
     """
     Sub-component of a product highly configurable
     """
+
     def __init__(self, brand, response_frequency, impedance, passive_current_draw, active_current_draw, price):
         self.brand = brand
         self.response_frequency = response_frequency
@@ -341,6 +347,7 @@ class Screen(object):
     """
     Sub-component of a product highly configurable
     """
+
     def __init__(self, height_mm, width_mm, pixels_per_mm, refresh_rate, passive_current_draw, active_current_draw,
                  price):
         self.height = height_mm
@@ -373,6 +380,7 @@ class ExternalShell(object):
     """
     Sub-component of a product highly configurable
     """
+
     def __init__(self, material, height, width, depth, drop_resistance_rating, assembly_cost_per_unit, is_water_proof,
                  is_dust_sand_proof, price):
         self.material = material
@@ -428,6 +436,7 @@ class BuilderInterface(object):
     concrete builders in line and ensures the concrete builders
     still have the methods required.
     """
+
     def build_circuit_board(self): pass
 
     def build_cellular_module(self): pass
@@ -441,6 +450,7 @@ class BuilderInterface(object):
     def build_external_shell(self): pass
 
 
+# noinspection PyMethodMayBeStatic
 class MeFone12(BuilderInterface):
     """
     Concrete Builder
@@ -450,6 +460,7 @@ class MeFone12(BuilderInterface):
     of all the variations of this type. However for this example I will
     just include the sub-classes with some mock data.
     """
+
     def __init__(self):
         self.mfg = "NBD"
         self.model = "MeFone12"
@@ -473,6 +484,7 @@ class MeFone12(BuilderInterface):
         return ExternalShell('Aluminum', 158.9, 85.1, .4, '3 ft.', 12.10, False, False, 6.12)
 
 
+# noinspection PyMethodMayBeStatic
 class BirdSungT8(BuilderInterface):
     """
     Concrete Builder
@@ -482,6 +494,7 @@ class BirdSungT8(BuilderInterface):
     of all the variations of this type. However for this example I will
     just include the sub-classes with some mock data.
     """
+
     def __init__(self):
         self.mfg = "Birdsung"
         self.model = "T8"
