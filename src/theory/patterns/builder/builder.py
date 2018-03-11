@@ -42,6 +42,11 @@ class CellPhone(object):
 
     @staticmethod
     def convert_seconds(seconds):
+        """
+        Given a number of seconds convert to days, hours, minutes, seconds
+        :param seconds: Int  Number of seconds to calc
+        :return: Tuple(days, hours, minutes, seconds)
+        """
         minutes, seconds = divmod(seconds, 60)
         hours, minutes = divmod(minutes, 60)
         days, hours = divmod(hours, 24)
@@ -49,6 +54,12 @@ class CellPhone(object):
 
     @staticmethod
     def get_price(thing_to_price):
+        """
+        Get the price of a component.
+        If one is not set or the component doesn't have one set the value to zero.
+        :param thing_to_price: Object   Price
+        :return: Int Price
+        """
         answer = 0
         try:
             answer += thing_to_price.price
@@ -58,11 +69,22 @@ class CellPhone(object):
 
     @staticmethod
     def calculate_msrp(cost_price):
+        """
+        Return a msrp the actual cost multiplied by mark up of some kind.
+        :param cost_price: Float  The cost of something
+        :return: Float The price of something after markup.
+        """
         return cost_price * 2.5
 
     @staticmethod
     def get_passive_current_draw(thing_to_calc):
-        current_draw = 0
+        """
+        Determine the passive electrical current draw of
+        a component. If it has one.
+        :param thing_to_calc: Object  A component object which may have a passive current draw
+        :return:  Float  The current during passive draw of a component
+        """
+        current_draw = 0.0
         try:
             current_draw += thing_to_calc.passive_draw
         except AttributeError as _:
@@ -71,7 +93,13 @@ class CellPhone(object):
 
     @staticmethod
     def get_active_current_draw(thing_to_calc):
-        current_draw = 0
+        """
+        Determine the active electrical current draw of a component.
+        IF it has one.
+        :param thing_to_calc: Object  A component object to check the draw of
+        :return: Float the current draw of the object if it has one. If not 0.0
+        """
+        current_draw = 0.0
         try:
             current_draw += thing_to_calc.active_draw
         except AttributeError as _:
@@ -80,6 +108,11 @@ class CellPhone(object):
 
     @staticmethod
     def convert_hours_to_seconds(milli_amp_hours):
+        """
+        Convert hours to seconds
+        :param milli_amp_hours: Float Hours
+        :return: Float seconds
+        """
         return milli_amp_hours * 60 * 60
 
     @property
