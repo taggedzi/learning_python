@@ -9,6 +9,12 @@ knows how to assemble the objects and the and return them to the director.
 This allows you to have the client code know nothing about how to construct
 the objects but get complex and intricate objects that vary at build time.
 it also allows loose coupling between client and object construction.
+
+Details about the Builder Pattern:
+https://www.wikiwand.com/en/Builder_pattern
+
+Details about the Property Decorator and Property Method:
+https://docs.python.org/2/howto/descriptor.html#properties
 """
 
 
@@ -18,8 +24,8 @@ class CellPhone(object):
     are built on the fly.
     """
     def __init__(self):
-        self.mgf = None
-        self.model = None
+        self.__mfg = None
+        self.__model = None
         self.__cellular_module = None
         self.__circuit_board = None
         self.__revision = None
@@ -32,24 +38,6 @@ class CellPhone(object):
         self.__active_battery_life = None
         self.__runtime_passive = None
         self.__runtime_active = None
-
-    def add_circuit_board(self, circuit_board):
-        self.__circuit_board = circuit_board
-
-    def add_cellular_module(self, module_type):
-        self.__cellular_module = module_type
-
-    def add_battery(self, battery):
-        self.__battery = battery
-
-    def add_speakers(self, speakers):
-        self.__speakers = speakers
-
-    def add_screen(self, screen):
-        self.__screen = screen
-
-    def add_external_shell(self, external_shell):
-        self.__external_shell = external_shell
 
     @staticmethod
     def convert_seconds(seconds):
@@ -93,17 +81,122 @@ class CellPhone(object):
     def convert_hours_to_seconds(milli_amp_hours):
         return milli_amp_hours * 60 * 60
 
-    def calculate_total_price(self):
-        total = self.get_price(self.__circuit_board)
-        total += self.get_price(self.__cellular_module)
-        total += self.get_price(self.__battery)
-        total += self.get_price(self.__speakers)
-        total += self.get_price(self.__screen)
-        total += self.get_price(self.__external_shell)
-        self.__price = total
+    @property
+    def mfg(self):
+        return self.__mfg
+
+    @mfg.setter
+    def mfg(self, manufacturer):
+        self.__mfg = manufacturer
+
+    @mfg.deleter
+    def mfg(self):
+        del self.__mfg
+
+    @property
+    def model(self):
+        return self.__model
+
+    @model.setter
+    def model(self, model):
+        self.__model = model
+
+    @model.deleter
+    def model(self):
+        del self.__model
+
+    @property
+    def circuit_board(self):
+        return self.__circuit_board
+
+    @circuit_board.setter
+    def circuit_board(self, circuit_board):
+        self.__circuit_board = circuit_board
+
+    @circuit_board.deleter
+    def circuit_board(self):
+        del self.__circuit_board
+
+    @property
+    def cellular_module(self):
+        return self.__cellular_module
+
+    @cellular_module.setter
+    def cellular_module(self, module_type):
+        self.__cellular_module = module_type
+
+    @cellular_module.deleter
+    def cellular_module(self):
+        del self.__cellular_module
+
+    @property
+    def battery(self):
+        return self.__battery
+
+    @battery.setter
+    def battery(self, battery):
+        self.__battery = battery
+
+    @battery.deleter
+    def battery(self):
+        del self.__battery
+
+    def get_speakers(self):
+        return self.__speakers
+
+    def set_speakers(self, speakers):
+        self.__speakers = speakers
+
+    def delete_speakers(self):
+        del self.__speakers
+
+    # Alternate syntax for property decorators
+    speakers = property(get_speakers, set_speakers, delete_speakers)
+
+    def get_screen(self):
+        return self.__screen
+
+    def set_screen(self, screen):
+        self.__screen = screen
+
+    def delete_screen(self):
+        del self.__screen
+
+    # Alternative syntax for property decorators
+    screen = property(get_screen, set_screen, delete_screen)
+
+    def get_external_shell(self):
+        return self.__external_shell
+
+    def set_external_shell(self, external_shell):
+        self.__external_shell = external_shell
+
+    def delete_external_shell(self):
+        del self.__external_shell
+
+    # Alternate property syntax
+    external_shell = property(get_external_shell, set_external_shell, delete_external_shell)
+
+    @property
+    def total_price(self):
+        if self.__price is None:
+            total = self.get_price(self.circuit_board)
+            total += self.get_price(self.cellular_module)
+            total += self.get_price(self.battery)
+            total += self.get_price(self.speakers)
+            total += self.get_price(self.screen)
+            total += self.get_price(self.external_shell)
+            self.__price = total
+        else:
+            total = self.__price
         return total
 
-    def calculate_passive_battery_time(self):
+    @property
+    def assembled_price(self):
+        return self.total_price + self.external_shell.assembly_cost
+
+    @property
+    def passive_battery_duration(self):
         capacity = self.__battery.storage_capacity
         total_passive_draw = CellPhone.get_passive_current_draw(self.__circuit_board)
         total_passive_draw += CellPhone.get_passive_current_draw(self.__cellular_module)
@@ -113,7 +206,8 @@ class CellPhone(object):
         self.__runtime_passive = self.convert_seconds(round(milli_amp_seconds / total_passive_draw))
         return self.__runtime_passive  # In seconds
 
-    def calculate_active_battery_time(self):
+    @property
+    def active_battery_duration(self):
         capacity = self.__battery.storage_capacity
         total_active_draw = CellPhone.get_active_current_draw(self.__circuit_board)
         total_active_draw += CellPhone.get_active_current_draw(self.__cellular_module)
@@ -123,24 +217,37 @@ class CellPhone(object):
         self.__runtime_active = self.convert_seconds(round(milli_amp_seconds / total_active_draw))
         return self.__runtime_active  # In seconds
 
-    def specification(self):
-        print("-" * 80)
-        print("Manufacturer: {phone.mfg}; Model: {phone.model}".format(phone=self))
-        print("Primary board design: {board.model} v{board.revision}".format(board=self.__circuit_board))
-        print("Supported cellular bands: {cell.bands}".format(cell=self.__cellular_module))
-        print(
-            "Battery: Capacity: {battery.storage_capacity} mAH; \n"
-            "\tEstimated standby time: {standby_time} days, hours, minutes, seconds; \n"
-            "\tEstimated talk time: {talk_time} days, hours, minutes, seconds".format(
-                battery=self.__battery, standby_time=self.calculate_passive_battery_time(),
-                talk_time=self.calculate_active_battery_time()))
-        print("Speakers response frequency: {speakers.response_frequency}".format(speakers=self.__speakers))
-        print("Screen resolution: {screen.width_pixels}x{screen.height_pixels} "
-              "@ {screen.refresh_rate} hz".format(screen=self.__screen))
-        print("External Dimensions: Height {shell.height} mm, Width {shell.width} mm, "
-              "Depth {shell.depth} mm.".format(shell=self.__external_shell))
-        print("Build Price: ${0:.2f}; MSRP: ${1:.2f};".format(self.calculate_total_price(),
-                                                              self.calculate_msrp(self.calculate_total_price())))
+    @property
+    def brochure(self):
+        output = "-" * 80 + "\n"
+        output += "Manufacturer: {phone.mfg}; Model: {phone.model}\n".format(phone=self)
+        output += "Primary board design: {board.model} v{board.revision}\n".format(board=self.circuit_board)
+        output += "Supported cellular bands: {cell.bands}\n".format(cell=self.cellular_module)
+        output += "Battery: Capacity: {battery.storage_capacity} mAH; \n" \
+                  "\tEstimated standby time: {standby_time} days, hours, minutes, seconds; \n" \
+                  "\tEstimated talk time: {talk_time} days, hours, minutes, seconds]\n".format(
+                    battery=self.battery, standby_time=self.passive_battery_duration,
+                    talk_time=self.active_battery_duration)
+        output += "Speakers response frequency: {speakers.response_frequency}\n".format(speakers=self.speakers)
+        output += "Screen resolution: {screen.width_pixels}x{screen.height_pixels} "\
+                  "@ {screen.refresh_rate} hz\n".format(screen=self.screen)
+        output += "External Dimensions: Height {shell.height} mm, Width {shell.width} mm, " \
+                  "Depth {shell.depth} mm.\n".format(shell=self.external_shell)
+        output += "MSRP: ${0:.2f};\n".format(self.calculate_msrp(self.total_price))
+        return output
+
+    def __str__(self):
+        output = "Manufacturer: {self.mfg}; Model: {self.model}; \n".format(self=self)
+        output += str(self.circuit_board)
+        output += str(self.cellular_module)
+        output += str(self.battery)
+        output += str(self.speakers)
+        output += str(self.screen)
+        output += str(self.external_shell)
+        output += "Price of Parts: ${self.total_price:.2f} USD;\n".format(self=self)
+        output += "Assembled Price: ${self.assembled_price:.2f} USD;\n".format(self=self)
+        output += "Recommended MSRP: ${0:.2f} USD;\n".format(self.calculate_msrp(self.total_price))
+        return output
 
 
 class CircuitBoard(object):
@@ -153,6 +260,14 @@ class CircuitBoard(object):
         self.active_draw = active_current_draw
         self.passive_draw = passive_current_draw
         self.price = price
+
+    def __str__(self):
+        output = "Circuit Board:\n"
+        output += "\tModel: {self.model} v{self.revision}\n".format(self=self)
+        output += "\tPower Consumption:\n"
+        output += "\t\tMax: {self.active_draw} mA; Min {self.passive_draw} mA;\n".format(self=self)
+        output += "\tPrice: ${self.price:.2f} USD\n".format(self=self)
+        return output
 
 
 class CellularModule(object):
@@ -167,6 +282,15 @@ class CellularModule(object):
         self.passive_draw = passive_current_draw
         self.price = price
 
+    def __str__(self):
+        output = "Cellular Module:\n"
+        output += "\tManufacturer: {self.manufacturer}; Make: {self.make};\n".format(self=self)
+        output += "\tSupported Cellular Protocols: {self.bands}\n".format(self=self)
+        output += "\tPower Consumption:\n"
+        output += "\t\tMax: {self.active_draw} mA; Min {self.passive_draw} mA;\n".format(self=self)
+        output += "\tPrice: ${self.price:.2f} USD\n".format(self=self)
+        return output
+
 
 class Battery(object):
     """
@@ -178,6 +302,15 @@ class Battery(object):
         self.storage_capacity = storage_capacity
         self.charge_cycles = charge_cycles
         self.price = price
+
+    def __str__(self):
+        output = "Battery:\n"
+        output += "\tForm factor: {self.form_factor}\n".format(self=self)
+        output += "\tBattery type: {self.battery_type}\n".format(self=self)
+        output += "\tStorage Capacity: {self.storage_capacity} mAh; " \
+                  "Average Charging Cycles: {self.charge_cycles};\n".format(self=self)
+        output += "\tPrice: ${self.price:.2f} USD;\n".format(self=self)
+        return output
 
 
 class Speakers(object):
@@ -191,6 +324,17 @@ class Speakers(object):
         self.passive_draw = passive_current_draw
         self.active_draw = active_current_draw
         self.price = price
+
+    def __str__(self):
+        output = "Speakers:\n"
+        output += "\tBrand: {self.brand}\n".format(self=self)
+        output += "\tResponse Frequency: {self.response_frequency}\n".format(self=self)
+        output += "\tElectrical Specs:\n"
+        output += "\t\tImpedance: {self.impedance}\n".format(self=self)
+        output += "\t\tMax Current Draw: {self.active_draw} mA; " \
+                  "Min Current Draw: {self.passive_draw} mA\n".format(self=self)
+        output += "\tPrice: ${self.price:.2f} USD\n".format(self=self)
+        return output
 
 
 class Screen(object):
@@ -209,6 +353,21 @@ class Screen(object):
         self.active_draw = active_current_draw
         self.price = price
 
+    def __str__(self):
+        output = "Screen:\n"
+        output += "\tDimensions:\n"
+        output += "\t\tHeight: {self.height} mm; Width: {self.width} mm\n".format(self=self)
+        output += "\tDisplay Details:\n"
+        output += "\t\tHeight in pixels: {self.height_pixels};\n".format(self=self)
+        output += "\t\tWidth in pixels: {self.width_pixels};\n".format(self=self)
+        output += "\t\tPixel Density (ppmm): {self.pixels_per_mm};\n".format(self=self)
+        output += "\t\tRefresh Rate: {self.refresh_rate}\n".format(self=self)
+        output += "\tCurrent Draw:\n"
+        output += "\t\tMax Current Draw: {self.active_draw} mA; " \
+                  "Min Current Draw: {self.passive_draw} mA\n".format(self=self)
+        output += "\tPrice: ${self.price:.2f} USD\n".format(self=self)
+        return output
+
 
 class ExternalShell(object):
     """
@@ -226,6 +385,18 @@ class ExternalShell(object):
         self.is_dust_sand_proof = is_dust_sand_proof
         self.price = price
 
+    def __str__(self):
+        output = "External Shell:\n"
+        output += "\tConstruction Material: {self.material};\n".format(self=self)
+        output += "\tDimensions:\n"
+        output += "\t\tHeight: {self.height} mm; Width: {self.width} mm; Depth: {self.depth} mm;\n".format(self=self)
+        output += "\tDrop Resistance: {self.drop_resistance_rating};\n".format(self=self)
+        output += "\tWater Proof: {self.is_water_proof};\n".format(self=self)
+        output += "\tDust and Sand Proof: {self.is_dust_sand_proof};\n".format(self=self)
+        output += "\tPrice: ${self.price:.2f} USD;\n".format(self=self)
+        output += "\tAssembly Cost: ${self.assembly_cost:.2f};\n".format(self=self)
+        return output
+
 
 class Director(object):
     """
@@ -240,28 +411,14 @@ class Director(object):
 
     def build_phone(self):
         phone = CellPhone()
-
         phone.mfg = self.__builder.mfg
         phone.model = self.__builder.model
-
-        circuit_board = self.__builder.build_circuit_board()
-        phone.add_circuit_board(circuit_board)
-
-        cellular_module = self.__builder.build_cellular_module()
-        phone.add_cellular_module(cellular_module)
-
-        battery = self.__builder.build_battery()
-        phone.add_battery(battery)
-
-        speakers = self.__builder.build_speakers()
-        phone.add_speakers(speakers)
-
-        screen = self.__builder.build_screen()
-        phone.add_screen(screen)
-
-        external_shell = self.__builder.build_external_shell()
-        phone.add_external_shell(external_shell)
-
+        phone.circuit_board = self.__builder.build_circuit_board()
+        phone.cellular_module = self.__builder.build_cellular_module()
+        phone.battery = self.__builder.build_battery()
+        phone.speakers = self.__builder.build_speakers()
+        phone.screen = self.__builder.build_screen()
+        phone.external_shell = self.__builder.build_external_shell()
         return phone
 
 
@@ -288,6 +445,10 @@ class MeFone12(BuilderInterface):
     """
     Concrete Builder
     This is an exact configuration to assemble a specific instance of a cellphone.
+    (aka the recipe required to make the MeFone 12)
+    These methods could be FAR more complex to allow for the creation
+    of all the variations of this type. However for this example I will
+    just include the sub-classes with some mock data.
     """
     def __init__(self):
         self.mfg = "NBD"
@@ -316,6 +477,10 @@ class BirdSungT8(BuilderInterface):
     """
     Concrete Builder
     This is an exact configuration to assemble a specific instance of a cellphone.
+    (aka the recipe required to make the BirdSung T8)
+    These methods could be FAR more complex to allow for the creation
+    of all the variations of this type. However for this example I will
+    just include the sub-classes with some mock data.
     """
     def __init__(self):
         self.mfg = "Birdsung"
@@ -325,7 +490,7 @@ class BirdSungT8(BuilderInterface):
         return CircuitBoard('Cobalt', '2.0.4', .117, .021, 78.21)
 
     def build_cellular_module(self):
-        return CellularModule('LukySnaps', 'VINA99', ['3G', '4G', 'CDMA', 'FDMA', 'EVDO3'], .21, .008, 72.63)
+        return CellularModule('LuckySnaps', 'VINA99', ['3G', '4G', 'CDMA', 'FDMA', 'EVDO3'], .21, .008, 72.63)
 
     def build_battery(self):
         return Battery("DNN0", "Lion", 7.8, 500, 10.12)
@@ -345,11 +510,13 @@ def main():
 
     d.set_builder(MeFone12())
     me_phone_12 = d.build_phone()
-    me_phone_12.specification()
+    print(me_phone_12.brochure)
+    print(me_phone_12)
 
     d.set_builder(BirdSungT8())
     bird_sung_t8 = d.build_phone()
-    bird_sung_t8.specification()
+    print(bird_sung_t8.brochure)
+    print(bird_sung_t8)
 
 
 if __name__ == "__main__":
