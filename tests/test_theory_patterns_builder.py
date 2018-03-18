@@ -460,6 +460,139 @@ Recommended MSRP: $45.00 USD;
         self.assertEqual(result, str(cp))
 
 
+class TestCircuitBoard(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestCircuitBoard, self).__init__(*args, **kwargs)
+        self.cb = None
+        self.test_model = 'test_model'
+        self.test_revision = 'test_revision'
+        self.test_active_draw = 0.1
+        self.test_passive_draw = 0.02
+        self.test_price = 5.00
+
+    def setUp(self):
+        self.cb = CircuitBoard(self.test_model, self.test_revision, self.test_active_draw, self.test_passive_draw,
+                               self.test_price)
+
+    def test_init(self):
+        self.assertEqual(self.test_model, self.cb.model)
+        self.assertEqual(self.test_revision, self.cb.revision)
+        self.assertEqual(self.test_active_draw, self.cb.active_draw)
+        self.assertEqual(self.test_passive_draw, self.cb.passive_draw)
+        self.assertEqual(self.test_price, self.cb.price)
+
+    def test_string_conversion(self):
+        expected = "Circuit Board:\n"
+        expected += "\tModel: {self.test_model} v{self.test_revision}\n".format(self=self)
+        expected += "\tPower Consumption:\n"
+        expected += "\t\tMax: {self.test_active_draw} mA; Min {self.test_passive_draw} mA;\n".format(self=self)
+        expected += "\tPrice: ${self.test_price:.2f} USD\n".format(self=self)
+        self.assertEqual(expected, str(self.cb))
+
+
+class TestCelluarModule(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestCelluarModule, self).__init__(*args, **kwargs)
+        self.cm = None
+        self.test_manufacturer = 'test_manufacturer'
+        self.test_make = 'test_make'
+        self.test_bands = ['cell_band_1', 'cell_band_2']
+        self.test_active_draw = 0.1
+        self.test_passive_draw = 0.02
+        self.test_price = 5.00
+
+    def setUp(self):
+        self.cm = CellularModule(self.test_manufacturer, self.test_make, self.test_bands, self.test_active_draw,
+                                 self.test_passive_draw, self.test_price)
+
+    def test_init(self):
+        self.assertEqual(self.test_manufacturer, self.cm.manufacturer)
+        self.assertEqual(self.test_make, self.cm.make)
+        self.assertEqual(self.test_bands, self.cm.bands)
+        self.assertEqual(self.test_active_draw, self.cm.active_draw)
+        self.assertEqual(self.test_passive_draw, self.cm.passive_draw)
+        self.assertEqual(self.test_price, self.cm.price)
+
+    def test_string_conversion(self):
+        expected = "Cellular Module:\n"
+        expected += "\tManufacturer: {self.test_manufacturer}; Make: {self.test_make};\n".format(self=self)
+        expected += "\tSupported Cellular Protocols: {self.test_bands}\n".format(self=self)
+        expected += "\tPower Consumption:\n"
+        expected += "\t\tMax: {self.test_active_draw} mA; Min {self.test_passive_draw} mA;\n".format(self=self)
+        expected += "\tPrice: ${self.test_price:.2f} USD\n".format(self=self)
+        self.assertEqual(expected, str(self.cm))
+
+
+class TestBattery(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestBattery, self).__init__(*args, **kwargs)
+        self.b = None
+        self.test_form_factor = 'test_form_factor'
+        self.test_battery_type = 'test_battery_type'
+        self.test_storage_capacity = 2
+        self.test_charge_cycles = 300
+        self.test_price = 5.00
+
+    def setUp(self):
+        self.b = Battery(self.test_form_factor, self.test_battery_type, self.test_storage_capacity, self.test_charge_cycles,
+                         self.test_price)
+
+    def test_init(self):
+        self.assertEqual(self.test_form_factor, self.b.form_factor)
+        self.assertEqual(self.test_battery_type, self.b.battery_type)
+        self.assertEqual(self.test_storage_capacity, self.b.storage_capacity)
+        self.assertEqual(self.test_charge_cycles, self.b.charge_cycles)
+        self.assertEqual(self.test_price, self.b.price)
+
+    def test_string_conversion(self):
+        expected = "Battery:\n"
+        expected += "\tForm factor: {self.test_form_factor}\n".format(self=self)
+        expected += "\tBattery type: {self.test_battery_type}\n".format(self=self)
+        expected += "\tStorage Capacity: {self.test_storage_capacity} mAh; " \
+                    "Average Charging Cycles: {self.test_charge_cycles};\n".format(self=self)
+        expected += "\tPrice: ${self.test_price:.2f} USD;\n".format(self=self)
+        self.assertEqual(expected, str(self.b))
+
+
+class TestSpeakers(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestSpeakers, self).__init__(*args, **kwargs)
+        self.s = None
+        self.test_brand = 'test_brand'
+        self.test_response_frequency = 'test_response_frequency'
+        self.test_impedance = 4
+        self.test_passive_draw = 0.02
+        self.test_active_draw = 0.1
+        self.test_price = 5.00
+
+    def setUp(self):
+        self.s = Speakers(self.test_brand, self.test_response_frequency, self.test_impedance, self.test_passive_draw,
+                          self.test_active_draw, self.test_price)
+
+    def test_init(self):
+        self.assertEqual(self.test_brand, self.s.brand)
+        self.assertEqual(self.test_response_frequency, self.s.response_frequency)
+        self.assertEqual(self.test_impedance, self.s.impedance)
+        self.assertEqual(self.test_passive_draw, self.s.passive_draw)
+        self.assertEqual(self.test_active_draw, self.s.active_draw)
+        self.assertEqual(self.test_price, self.s.price)
+
+    def test_string_conversion(self):
+        expected = "Speakers:\n"
+        expected += "\tBrand: {self.test_brand}\n".format(self=self)
+        expected += "\tResponse Frequency: {self.test_response_frequency}\n".format(self=self)
+        expected += "\tElectrical Specs:\n"
+        expected += "\t\tImpedance: {self.test_impedance}\n".format(self=self)
+        expected += "\t\tMax Current Draw: {self.test_active_draw} mA; " \
+                    "Min Current Draw: {self.test_passive_draw} mA\n".format(self=self)
+        expected += "\tPrice: ${self.test_price:.2f} USD\n".format(self=self)
+        self.assertEqual(expected, str(self.s))
+
+
 if __name__ == "__main__":
     # execute only if run as a script
     unittest.main()
