@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import unittest
+from unittest.mock import patch
+from unittest.mock import Mock
+from unittest.mock import call
 from src.theory.patterns.builder.builder import CellPhone
 from src.theory.patterns.builder.builder import CircuitBoard
 from src.theory.patterns.builder.builder import CellularModule
@@ -8,7 +11,6 @@ from src.theory.patterns.builder.builder import Battery
 from src.theory.patterns.builder.builder import Speakers
 from src.theory.patterns.builder.builder import Screen
 from src.theory.patterns.builder.builder import ExternalShell
-
 
 
 class ComponentTestClassEmpty(object):
@@ -31,6 +33,70 @@ class ComponentTestClassWithActiveDraw(object):
 
 
 class TestCellPhone(unittest.TestCase):
+
+    @staticmethod
+    def build_battery_with_mah(mah):
+        return Battery('test_form', 'test_type', mah, 200, 3)
+
+    @staticmethod
+    def build_external_shell():
+        return ExternalShell('test_material', 150, 85, .5, 'test_drop_height', 3, False, False, 3)
+
+    @staticmethod
+    def build_circuit_board_price(price):
+        return CircuitBoard('test_model', 'test_version', .1, .02, price)
+
+    @staticmethod
+    def build_cellular_module_price(price):
+        return CellularModule('test_mfg', 'test_model', ['cell_band_1', 'cell_band_2'], .1, .02, price)
+
+    @staticmethod
+    def build_battery_price(price):
+        return Battery('test_form', 'test_type', 5, 200, price)
+
+    @staticmethod
+    def build_speakers_price(price):
+        return Speakers('test_brand', 'test_frequency', 2, .1, .02, price)
+
+    @staticmethod
+    def build_screen_price(price):
+        return Screen(1000, 800, 14, 60, .1, .02, price)
+
+    @staticmethod
+    def build_external_shell_price(assembly_price, price):
+        return ExternalShell('test_material', 150, 85, .5, 'test_drop_height', assembly_price, False, False, price)
+
+    @staticmethod
+    def build_circuit_board_passive_battery_duration(passive):
+        return CircuitBoard('test_model', 'test_version', .1, passive, 3)
+
+    @staticmethod
+    def build_cellular_module_passive_battery_duration(passive):
+        return CellularModule('test_mfg', 'test_model', ['cell_band_1', 'cell_band_2'], .1, passive, 3)
+
+    @staticmethod
+    def build_speakers_passive_battery_duration(passive):
+        return Speakers('test_brand', 'test_frequency', 2, .1, passive, 3)
+
+    @staticmethod
+    def build_screen_passive_battery_duration(passive):
+        return Screen(1000, 800, 14, 60, .1, passive, 3)
+
+    @staticmethod
+    def build_circuit_board_active_battery_duration(active):
+        return CircuitBoard('test_model', 'test_version', active, 0.02, 3)
+
+    @staticmethod
+    def build_cellular_module_active_battery_duration(active):
+        return CellularModule('test_mfg', 'test_model', ['cell_band_1', 'cell_band_2'], active, 0.02, 3)
+
+    @staticmethod
+    def build_speakers_active_battery_duration(active):
+        return Speakers('test_brand', 'test_frequency', 2, active, 0.02, 3)
+
+    @staticmethod
+    def build_screen_active_battery_duration(active):
+        return Screen(1000, 800, 14, 60, active, 0.02, 3)
 
     def test_convert_seconds_no_input_exception(self):
         with self.assertRaises(TypeError) as context:
@@ -190,30 +256,6 @@ class TestCellPhone(unittest.TestCase):
         cp.external_shell = "cellphone_external_shell"
         self.assertEqual("cellphone_external_shell", cp.external_shell)
 
-    @staticmethod
-    def build_circuit_board_price(price):
-        return CircuitBoard('test_model', 'test_version', .1, .02, price)
-
-    @staticmethod
-    def build_cellular_module_price(price):
-        return CellularModule('test_mfg', 'test_model', ['cell_band_1', 'cell_band_2'], .1, .02, price)
-
-    @staticmethod
-    def build_battery_price(price):
-        return Battery('test_form', 'test_type', 5, 200, price)
-
-    @staticmethod
-    def build_speakers_price(price):
-        return Speakers('test_brand', 'test_frequency', 2, .1, .02, price)
-
-    @staticmethod
-    def build_screen_price(price):
-        return Screen(1000, 800, 14, 60, .1, .02, price)
-
-    @staticmethod
-    def build_external_shell_price(assembly_price, price):
-        return ExternalShell('test_material', 150, 85, .5, 'test_drop_height', assembly_price, False, False, price)
-
     def test_total_price_no_parts(self):
         cp = CellPhone()
         self.assertEqual(0.0, cp.total_price)
@@ -225,7 +267,7 @@ class TestCellPhone(unittest.TestCase):
         cp.battery = TestCellPhone.build_battery_price(0.0)
         cp.speakers = TestCellPhone.build_speakers_price(0.0)
         cp.screen = TestCellPhone.build_screen_price(0.0)
-        cp.ExternalShell = TestCellPhone.build_external_shell_price(0.0, 0.0)
+        cp.external_shell = TestCellPhone.build_external_shell_price(0.0, 0.0)
         self.assertEqual(0.0, cp.total_price)
 
     def test_total_price_all_ones(self):
@@ -271,30 +313,6 @@ class TestCellPhone(unittest.TestCase):
         cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
         self.assertEqual(3.0, cp.assembled_price)
 
-    @staticmethod
-    def build_circuit_board_passive_battery_duration(passive):
-        return CircuitBoard('test_model', 'test_version', .1, passive, 3)
-
-    @staticmethod
-    def build_cellular_module_passive_battery_duration(passive):
-        return CellularModule('test_mfg', 'test_model', ['cell_band_1', 'cell_band_2'], .1, passive, 3)
-
-    @staticmethod
-    def build_battery_with_mah(mah):
-        return Battery('test_form', 'test_type', mah, 200, 3)
-
-    @staticmethod
-    def build_speakers_passive_battery_duration(passive):
-        return Speakers('test_brand', 'test_frequency', 2, .1, passive, 3)
-
-    @staticmethod
-    def build_screen_passive_battery_duration(passive):
-        return Screen(1000, 800, 14, 60, .1, passive, 3)
-
-    @staticmethod
-    def build_external_shell():
-        return ExternalShell('test_material', 150, 85, .5, 'test_drop_height', 3, False, False, 3)
-
     def test_passive_battery_duration_no_components_set(self):
         cp = CellPhone()
         cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(0.0)
@@ -302,8 +320,144 @@ class TestCellPhone(unittest.TestCase):
         cp.battery = TestCellPhone.build_battery_with_mah(0.0)
         cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.0)
         cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.0)
-        cp.ExternalShell = TestCellPhone.build_external_shell()
+        cp.external_shell = TestCellPhone.build_external_shell()
         self.assertEqual((0, 0, 0, 0), cp.passive_battery_duration)
+
+    def test_passive_battery_duration_all_components_set_no_battery(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(.02)
+        cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(.02)
+        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.2)
+        cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.2)
+        cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), cp.passive_battery_duration)
+
+    def test_passive_battery_duration_all_components_set(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(.02)
+        cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(.02)
+        cp.battery = TestCellPhone.build_battery_with_mah(2)
+        cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.2)
+        cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.2)
+        cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 8, 20, 0), cp.passive_battery_duration)
+
+    def test_active_battery_duration_no_components_set(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(0.0)
+        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(0.0)
+        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.0)
+        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.0)
+        cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), cp.active_battery_duration)
+
+    def test_active_battery_duration_all_components_set_no_battery(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), cp.active_battery_duration)
+
+    def test_active_battery_duration_all_components_set(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        cp.battery = TestCellPhone.build_battery_with_mah(2)
+        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 8, 20, 0), cp.active_battery_duration)
+
+    @patch("sys.stdout", Mock())
+    def test_brochure(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        cp.battery = TestCellPhone.build_battery_with_mah(2)
+        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        cp.external_shell = TestCellPhone.build_external_shell()
+
+        result = """--------------------------------------------------------------------------------
+Manufacturer: None; Model: None
+Primary board design: test_model vtest_version
+Supported cellular bands: ['cell_band_1', 'cell_band_2']
+Battery: Capacity: 2 mAH;
+\tEstimated standby time: (0, 8, 20, 0) days, hours, minutes, seconds;
+\tEstimated talk time: (0, 8, 20, 0) days, hours, minutes, seconds;
+Speakers response frequency: test_frequency
+Screen resolution: 11200x14000 @ 60 hz
+External Dimensions: Height 150 mm, Width 85 mm, Depth 0.5 mm.
+MSRP: $45.00;
+"""
+        self.maxDiff = None
+        self.assertEqual(result, cp.brochure)
+
+    @patch("sys.stdout", Mock())
+    def test_string_conversion(self):
+        cp = CellPhone()
+        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        cp.battery = TestCellPhone.build_battery_with_mah(2)
+        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        cp.external_shell = TestCellPhone.build_external_shell()
+
+        result = """Manufacturer: None; Model: None;
+Circuit Board:
+\tModel: test_model vtest_version
+\tPower Consumption:
+\t\tMax: 0.1 mA; Min 0.02 mA;
+\tPrice: $3.00 USD
+Cellular Module:
+\tManufacturer: test_mfg; Make: test_model;
+\tSupported Cellular Protocols: ['cell_band_1', 'cell_band_2']
+\tPower Consumption:
+\t\tMax: 0.1 mA; Min 0.02 mA;
+\tPrice: $3.00 USD
+Battery:
+\tForm factor: test_form
+\tBattery type: test_type
+\tStorage Capacity: 2 mAh; Average Charging Cycles: 200;
+\tPrice: $3.00 USD;
+Speakers:
+\tBrand: test_brand
+\tResponse Frequency: test_frequency
+\tElectrical Specs:
+\t\tImpedance: 2
+\t\tMax Current Draw: 0.02 mA; Min Current Draw: 0.1 mA
+\tPrice: $3.00 USD
+Screen:
+\tDimensions:
+\t\tHeight: 1000 mm; Width: 800 mm
+\tDisplay Details:
+\t\tHeight in pixels: 14000;
+\t\tWidth in pixels: 11200;
+\t\tPixel Density (ppmm): 14;
+\t\tRefresh Rate: 60
+\tCurrent Draw:
+\t\tMax Current Draw: 0.02 mA; Min Current Draw: 0.1 mA
+\tPrice: $3.00 USD
+External Shell:
+\tConstruction Material: test_material;
+\tDimensions:
+\t\tHeight: 150 mm; Width: 85 mm; Depth: 0.5 mm;
+\tDrop Resistance: test_drop_height;
+\tWater Proof: False;
+\tDust and Sand Proof: False;
+\tPrice: $3.00 USD;
+\tAssembly Cost: $3.00;
+Price of Parts: $18.00 USD;
+Assembled Price: $21.00 USD;
+Recommended MSRP: $45.00 USD;
+"""
+        self.maxDiff = None
+        self.assertEqual(result, str(cp))
 
 
 if __name__ == "__main__":

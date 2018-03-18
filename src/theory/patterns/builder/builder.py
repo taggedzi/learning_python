@@ -240,7 +240,7 @@ class CellPhone(object):
         total_passive_draw += CellPhone.get_passive_current_draw(self.__screen)
         milli_amp_seconds = CellPhone.convert_hours_to_seconds(capacity)
         self.__runtime_passive = self.convert_seconds(round(milli_amp_seconds / total_passive_draw))
-        return self.__runtime_passive  # In seconds
+        return self.__runtime_passive  # (days, hours, minutes, seconds)
 
     @property
     def active_battery_duration(self):
@@ -251,7 +251,7 @@ class CellPhone(object):
         total_active_draw += CellPhone.get_active_current_draw(self.__screen)
         milli_amp_seconds = CellPhone.convert_hours_to_seconds(capacity)
         self.__runtime_active = self.convert_seconds(round(milli_amp_seconds / total_active_draw))
-        return self.__runtime_active  # In seconds
+        return self.__runtime_active  # (days, hours, minutes, seconds)
 
     @property
     def brochure(self):
@@ -259,8 +259,8 @@ class CellPhone(object):
         output += "Manufacturer: {phone.mfg}; Model: {phone.model}\n".format(phone=self)
         output += "Primary board design: {board.model} v{board.revision}\n".format(board=self.circuit_board)
         output += "Supported cellular bands: {cell.bands}\n".format(cell=self.cellular_module)
-        output += "Battery: Capacity: {battery.storage_capacity} mAH; \n" \
-                  "\tEstimated standby time: {standby_time} days, hours, minutes, seconds; \n" \
+        output += "Battery: Capacity: {battery.storage_capacity} mAH;\n" \
+                  "\tEstimated standby time: {standby_time} days, hours, minutes, seconds;\n" \
                   "\tEstimated talk time: {talk_time} " \
                   "days, hours, minutes, seconds;\n".format(battery=self.battery,
                                                             standby_time=self.passive_battery_duration,
@@ -274,7 +274,7 @@ class CellPhone(object):
         return output
 
     def __str__(self):
-        output = "Manufacturer: {self.mfg}; Model: {self.model}; \n".format(self=self)
+        output = "Manufacturer: {self.mfg}; Model: {self.model};\n".format(self=self)
         output += str(self.circuit_board)
         output += str(self.cellular_module)
         output += str(self.battery)
