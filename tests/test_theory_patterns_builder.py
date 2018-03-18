@@ -3,7 +3,6 @@
 import unittest
 from unittest.mock import patch
 from unittest.mock import Mock
-from unittest.mock import call
 from src.theory.patterns.builder.builder import CellPhone
 from src.theory.patterns.builder.builder import CircuitBoard
 from src.theory.patterns.builder.builder import CellularModule
@@ -33,6 +32,17 @@ class ComponentTestClassWithActiveDraw(object):
 
 
 class TestCellPhone(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestCellPhone, self).__init__(*args, **kwargs)
+        self.maxDiff = None
+        self.cp = None
+
+    def setUp(self):
+        self.cp = CellPhone()
+
+    def tearDown(self):
+        del self.cp
 
     @staticmethod
     def build_battery_with_mah(mah):
@@ -177,211 +187,182 @@ class TestCellPhone(unittest.TestCase):
         self.assertEqual(60 * 60, answer)
 
     def test_mfg_del(self):
-        cp = CellPhone()
-        del cp.mfg
-        self.assertTrue(not hasattr(cp, "mfg"))
+        del self.cp.mfg
+        self.assertTrue(not hasattr(self.cp, "mfg"))
 
     def test_mfg_set_get(self):
-        cp = CellPhone()
-        cp.mfg = "cellphone_mfg"
-        self.assertEqual("cellphone_mfg", cp.mfg)
+        self.cp.mfg = "cellphone_mfg"
+        self.assertEqual("cellphone_mfg", self.cp.mfg)
 
     def test_model_del(self):
-        cp = CellPhone()
-        del cp.model
-        self.assertTrue(not hasattr(cp, "model"))
+        del self.cp.model
+        self.assertTrue(not hasattr(self.cp, "model"))
 
     def test_model_set_get(self):
-        cp = CellPhone()
-        cp.model = "cellphone_model"
-        self.assertEqual("cellphone_model", cp.model)
+        self.cp.model = "cellphone_model"
+        self.assertEqual("cellphone_model", self.cp.model)
 
     def test_circuit_board_del(self):
-        cp = CellPhone()
-        del cp.circuit_board
-        self.assertTrue(not hasattr(cp, "circuit_board"))
+        del self.cp.circuit_board
+        self.assertTrue(not hasattr(self.cp, "circuit_board"))
 
     def test_circuit_board_set_get(self):
-        cp = CellPhone()
-        cp.circuit_board = "cellphone_circuit_board"
-        self.assertEqual("cellphone_circuit_board", cp.circuit_board)
+        self.cp.circuit_board = "cellphone_circuit_board"
+        self.assertEqual("cellphone_circuit_board", self.cp.circuit_board)
 
     def test_cellular_module_del(self):
-        cp = CellPhone()
-        del cp.cellular_module
-        self.assertTrue(not hasattr(cp, "cellular_module"))
+        del self.cp.cellular_module
+        self.assertTrue(not hasattr(self.cp, "cellular_module"))
 
     def test_cellular_module_set_get(self):
-        cp = CellPhone()
-        cp.cellular_module = "cellphone_cellular_module"
-        self.assertEqual("cellphone_cellular_module", cp.cellular_module)
+        self.cp.cellular_module = "cellphone_cellular_module"
+        self.assertEqual("cellphone_cellular_module", self.cp.cellular_module)
 
     def test_battery_del(self):
-        cp = CellPhone()
-        del cp.battery
-        self.assertTrue(not hasattr(cp, "battery"))
+        del self.cp.battery
+        self.assertTrue(not hasattr(self.cp, "battery"))
 
     def test_battery_set_get(self):
-        cp = CellPhone()
-        cp.battery = "cellphone_battery"
-        self.assertEqual("cellphone_battery", cp.battery)
+        self.cp.battery = "cellphone_battery"
+        self.assertEqual("cellphone_battery", self.cp.battery)
 
     def test_speakers_del(self):
-        cp = CellPhone()
-        del cp.speakers
-        self.assertTrue(not hasattr(cp, "speakers"))
+        del self.cp.speakers
+        self.assertTrue(not hasattr(self.cp, "speakers"))
 
     def test_speakers_set_get(self):
-        cp = CellPhone()
-        cp.speakers = "cellphone_speakers"
-        self.assertEqual("cellphone_speakers", cp.speakers)
+        self.cp.speakers = "cellphone_speakers"
+        self.assertEqual("cellphone_speakers", self.cp.speakers)
 
     def test_screen_del(self):
-        cp = CellPhone()
-        del cp.screen
-        self.assertTrue(not hasattr(cp, "screen"))
+        del self.cp.screen
+        self.assertTrue(not hasattr(self.cp, "screen"))
 
     def test_screen_set_get(self):
-        cp = CellPhone()
-        cp.screen = "cellphone_screen"
-        self.assertEqual("cellphone_screen", cp.screen)
+        self.cp.screen = "cellphone_screen"
+        self.assertEqual("cellphone_screen", self.cp.screen)
 
     def test_external_shell_del(self):
-        cp = CellPhone()
-        del cp.external_shell
-        self.assertTrue(not hasattr(cp, "external_shell"))
+        del self.cp.external_shell
+        self.assertTrue(not hasattr(self.cp, "external_shell"))
 
     def test_external_shell_set_get(self):
-        cp = CellPhone()
-        cp.external_shell = "cellphone_external_shell"
-        self.assertEqual("cellphone_external_shell", cp.external_shell)
+        self.cp.external_shell = "cellphone_external_shell"
+        self.assertEqual("cellphone_external_shell", self.cp.external_shell)
 
     def test_total_price_no_parts(self):
-        cp = CellPhone()
-        self.assertEqual(0.0, cp.total_price)
+        self.assertEqual(0.0, self.cp.total_price)
 
     def test_total_price_all_zeros(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_price(0.0)
-        cp.cellular_module = TestCellPhone.build_cellular_module_price(0.0)
-        cp.battery = TestCellPhone.build_battery_price(0.0)
-        cp.speakers = TestCellPhone.build_speakers_price(0.0)
-        cp.screen = TestCellPhone.build_screen_price(0.0)
-        cp.external_shell = TestCellPhone.build_external_shell_price(0.0, 0.0)
-        self.assertEqual(0.0, cp.total_price)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_price(0.0)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_price(0.0)
+        self.cp.battery = TestCellPhone.build_battery_price(0.0)
+        self.cp.speakers = TestCellPhone.build_speakers_price(0.0)
+        self.cp.screen = TestCellPhone.build_screen_price(0.0)
+        self.cp.external_shell = TestCellPhone.build_external_shell_price(0.0, 0.0)
+        self.assertEqual(0.0, self.cp.total_price)
 
     def test_total_price_all_ones(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_price(1.0)
-        cp.cellular_module = TestCellPhone.build_cellular_module_price(1.0)
-        cp.battery = TestCellPhone.build_battery_price(1.0)
-        cp.speakers = TestCellPhone.build_speakers_price(1.0)
-        cp.screen = TestCellPhone.build_screen_price(1.0)
-        cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
-        self.assertEqual(6.0, cp.total_price)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_price(1.0)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_price(1.0)
+        self.cp.battery = TestCellPhone.build_battery_price(1.0)
+        self.cp.speakers = TestCellPhone.build_speakers_price(1.0)
+        self.cp.screen = TestCellPhone.build_screen_price(1.0)
+        self.cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
+        self.assertEqual(6.0, self.cp.total_price)
 
     def test_total_price_increment_each_component(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_price(1.0)
-        self.assertEqual(1.0, cp.total_price)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_price(1.0)
+        self.assertEqual(1.0, self.cp.total_price)
 
-        cp.cellular_module = TestCellPhone.build_cellular_module_price(1.0)
-        self.assertEqual(2.0, cp.total_price)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_price(1.0)
+        self.assertEqual(2.0, self.cp.total_price)
 
-        cp.battery = TestCellPhone.build_battery_price(1.0)
-        self.assertEqual(3.0, cp.total_price)
+        self.cp.battery = TestCellPhone.build_battery_price(1.0)
+        self.assertEqual(3.0, self.cp.total_price)
 
-        cp.speakers = TestCellPhone.build_speakers_price(1.0)
-        self.assertEqual(4.0, cp.total_price)
+        self.cp.speakers = TestCellPhone.build_speakers_price(1.0)
+        self.assertEqual(4.0, self.cp.total_price)
 
-        cp.screen = TestCellPhone.build_screen_price(1.0)
-        self.assertEqual(5.0, cp.total_price)
+        self.cp.screen = TestCellPhone.build_screen_price(1.0)
+        self.assertEqual(5.0, self.cp.total_price)
 
-        cp.external_shell = TestCellPhone.build_external_shell_price(0.0, 1.0)
-        self.assertEqual(6.0, cp.total_price)
+        self.cp.external_shell = TestCellPhone.build_external_shell_price(0.0, 1.0)
+        self.assertEqual(6.0, self.cp.total_price)
 
-        cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
-        self.assertEqual(6.0, cp.total_price)
+        self.cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
+        self.assertEqual(6.0, self.cp.total_price)
 
     def test_assembled_price_all_empty(self):
-        cp = CellPhone()
-        self.assertEqual(0.0, cp.assembled_price)
+        self.assertEqual(0.0, self.cp.assembled_price)
 
     def test_assembled_price_single_component_and_assembly_cost(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_price(1.0)
-        cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
-        self.assertEqual(3.0, cp.assembled_price)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_price(1.0)
+        self.cp.external_shell = TestCellPhone.build_external_shell_price(1.0, 1.0)
+        self.assertEqual(3.0, self.cp.assembled_price)
 
     def test_passive_battery_duration_no_components_set(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(0.0)
-        cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(0.0)
-        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
-        cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.0)
-        cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.0)
-        cp.external_shell = TestCellPhone.build_external_shell()
-        self.assertEqual((0, 0, 0, 0), cp.passive_battery_duration)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(0.0)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(0.0)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        self.cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.0)
+        self.cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.0)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), self.cp.passive_battery_duration)
 
     def test_passive_battery_duration_all_components_set_no_battery(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(.02)
-        cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(.02)
-        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
-        cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.2)
-        cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.2)
-        cp.external_shell = TestCellPhone.build_external_shell()
-        self.assertEqual((0, 0, 0, 0), cp.passive_battery_duration)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(.02)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(.02)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        self.cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.2)
+        self.cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.2)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), self.cp.passive_battery_duration)
 
     def test_passive_battery_duration_all_components_set(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(.02)
-        cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(.02)
-        cp.battery = TestCellPhone.build_battery_with_mah(2)
-        cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.2)
-        cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.2)
-        cp.external_shell = TestCellPhone.build_external_shell()
-        self.assertEqual((0, 8, 20, 0), cp.passive_battery_duration)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_passive_battery_duration(.02)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_passive_battery_duration(.02)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(2)
+        self.cp.speakers = TestCellPhone.build_speakers_passive_battery_duration(0.2)
+        self.cp.screen = TestCellPhone.build_screen_passive_battery_duration(0.2)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 8, 20, 0), self.cp.passive_battery_duration)
 
     def test_active_battery_duration_no_components_set(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(0.0)
-        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(0.0)
-        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
-        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.0)
-        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.0)
-        cp.external_shell = TestCellPhone.build_external_shell()
-        self.assertEqual((0, 0, 0, 0), cp.active_battery_duration)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(0.0)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(0.0)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        self.cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.0)
+        self.cp.screen = TestCellPhone.build_screen_active_battery_duration(0.0)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), self.cp.active_battery_duration)
 
     def test_active_battery_duration_all_components_set_no_battery(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
-        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
-        cp.battery = TestCellPhone.build_battery_with_mah(0.0)
-        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
-        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
-        cp.external_shell = TestCellPhone.build_external_shell()
-        self.assertEqual((0, 0, 0, 0), cp.active_battery_duration)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(0.0)
+        self.cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        self.cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 0, 0, 0), self.cp.active_battery_duration)
 
     def test_active_battery_duration_all_components_set(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
-        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
-        cp.battery = TestCellPhone.build_battery_with_mah(2)
-        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
-        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
-        cp.external_shell = TestCellPhone.build_external_shell()
-        self.assertEqual((0, 8, 20, 0), cp.active_battery_duration)
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(2)
+        self.cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        self.cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
+        self.assertEqual((0, 8, 20, 0), self.cp.active_battery_duration)
 
     @patch("sys.stdout", Mock())
     def test_brochure(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
-        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
-        cp.battery = TestCellPhone.build_battery_with_mah(2)
-        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
-        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
-        cp.external_shell = TestCellPhone.build_external_shell()
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(2)
+        self.cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        self.cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
 
         result = """--------------------------------------------------------------------------------
 Manufacturer: None; Model: None
@@ -395,18 +376,15 @@ Screen resolution: 11200x14000 @ 60 hz
 External Dimensions: Height 150 mm, Width 85 mm, Depth 0.5 mm.
 MSRP: $45.00;
 """
-        self.maxDiff = None
-        self.assertEqual(result, cp.brochure)
+        self.assertEqual(result, self.cp.brochure)
 
-    @patch("sys.stdout", Mock())
     def test_string_conversion(self):
-        cp = CellPhone()
-        cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
-        cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
-        cp.battery = TestCellPhone.build_battery_with_mah(2)
-        cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
-        cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
-        cp.external_shell = TestCellPhone.build_external_shell()
+        self.cp.circuit_board = TestCellPhone.build_circuit_board_active_battery_duration(.1)
+        self.cp.cellular_module = TestCellPhone.build_cellular_module_active_battery_duration(.1)
+        self.cp.battery = TestCellPhone.build_battery_with_mah(2)
+        self.cp.speakers = TestCellPhone.build_speakers_active_battery_duration(0.1)
+        self.cp.screen = TestCellPhone.build_screen_active_battery_duration(0.1)
+        self.cp.external_shell = TestCellPhone.build_external_shell()
 
         result = """Manufacturer: None; Model: None;
 Circuit Board:
@@ -456,8 +434,7 @@ Price of Parts: $18.00 USD;
 Assembled Price: $21.00 USD;
 Recommended MSRP: $45.00 USD;
 """
-        self.maxDiff = None
-        self.assertEqual(result, str(cp))
+        self.assertEqual(result, str(self.cp))
 
 
 class TestCircuitBoard(unittest.TestCase):
@@ -591,6 +568,98 @@ class TestSpeakers(unittest.TestCase):
                     "Min Current Draw: {self.test_passive_draw} mA\n".format(self=self)
         expected += "\tPrice: ${self.test_price:.2f} USD\n".format(self=self)
         self.assertEqual(expected, str(self.s))
+
+
+class TestScreen(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestScreen, self).__init__(*args, **kwargs)
+        self.s = None
+        self.test_height = 1080
+        self.test_width = 768
+        self.test_pixels_per_mm = 10
+        self.test_refresh_rate = 24
+        self.test_passive_draw = .1
+        self.test_active_draw = .4
+        self.test_price = 5.00
+        self.calculated_height = self.test_height * self.test_pixels_per_mm
+        self.calculated_width = self.test_width * self.test_pixels_per_mm
+
+    def setUp(self):
+        self.s = Screen(self.test_height, self.test_width, self.test_pixels_per_mm, self.test_refresh_rate,
+                        self.test_passive_draw, self.test_active_draw, self.test_price)
+
+    def test_init(self):
+        self.assertEqual(self.test_height, self.s.height)
+        self.assertEqual(self.test_width, self.s.width)
+        self.assertEqual(self.test_pixels_per_mm, self.s.pixels_per_mm)
+        self.assertEqual(self.test_height * self.test_pixels_per_mm, self.s.height_pixels)
+        self.assertEqual(self.test_width * self.test_pixels_per_mm, self.s.width_pixels)
+        self.assertEqual(self.test_refresh_rate, self.s.refresh_rate)
+        self.assertEqual(self.test_passive_draw, self.s.passive_draw)
+        self.assertEqual(self.test_active_draw, self.s.active_draw)
+        self.assertEqual(self.test_price, self.s.price)
+        self.assertEqual(self.calculated_height, self.s.height_pixels)
+        self.assertEqual(self.calculated_width, self.s.width_pixels)
+
+    def test_string_conversion(self):
+        expected = "Screen:\n"
+        expected += "\tDimensions:\n"
+        expected += "\t\tHeight: {self.test_height} mm; Width: {self.test_width} mm\n".format(self=self)
+        expected += "\tDisplay Details:\n"
+        expected += "\t\tHeight in pixels: {self.calculated_height};\n".format(self=self)
+        expected += "\t\tWidth in pixels: {self.calculated_width};\n".format(self=self)
+        expected += "\t\tPixel Density (ppmm): {self.test_pixels_per_mm};\n".format(self=self)
+        expected += "\t\tRefresh Rate: {self.test_refresh_rate}\n".format(self=self)
+        expected += "\tCurrent Draw:\n"
+        expected += "\t\tMax Current Draw: {self.test_active_draw} mA; " \
+                    "Min Current Draw: {self.test_passive_draw} mA\n".format(self=self)
+        expected += "\tPrice: ${self.test_price:.2f} USD\n".format(self=self)
+        self.assertEqual(expected, str(self.s))
+
+
+class TestExternalShell(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestExternalShell, self).__init__(*args, **kwargs)
+        self.es = None
+        self.test_material = "test_material"
+        self.test_height = 768
+        self.test_width = 1080
+        self.test_depth = 5.5
+        self.test_drop_resistance_rating = 4
+        self.test_assembly_cost = 5.12
+        self.test_is_water_proof = False
+        self.test_is_dust_sand_proof = False
+        self.test_price = 1.22
+
+    def setUp(self):
+        self.es = ExternalShell(self.test_material, self.test_height, self.test_width, self.test_depth,
+                                self.test_drop_resistance_rating, self.test_assembly_cost, self.test_is_water_proof,
+                                self.test_is_dust_sand_proof, self.test_price)
+
+    def test_init(self):
+        self.assertEqual(self.test_material, self.es.material)
+        self.assertEqual(self.test_height, self.es.height)
+        self.assertEqual(self.test_width, self.es.width)
+        self.assertEqual(self.test_depth, self.es.depth)
+        self.assertEqual(self.test_drop_resistance_rating, self.es.drop_resistance_rating)
+        self.assertEqual(self.test_assembly_cost, self.es.assembly_cost)
+        self.assertEqual(self.test_is_water_proof, self.es.is_water_proof)
+        self.assertEqual(self.test_is_dust_sand_proof, self.es.is_dust_sand_proof)
+        self.assertEqual(self.test_price, self.es.price)
+
+    def test_string_conversion(self):
+        expected = "External Shell:\n"
+        expected += "\tConstruction Material: {self.test_material};\n".format(self=self)
+        expected += "\tDimensions:\n"
+        expected += "\t\tHeight: {self.test_height} mm; Width: {self.test_width} mm; Depth: {self.test_depth} mm;\n".format(self=self)
+        expected += "\tDrop Resistance: {self.test_drop_resistance_rating};\n".format(self=self)
+        expected += "\tWater Proof: {self.test_is_water_proof};\n".format(self=self)
+        expected += "\tDust and Sand Proof: {self.test_is_dust_sand_proof};\n".format(self=self)
+        expected += "\tPrice: ${self.test_price:.2f} USD;\n".format(self=self)
+        expected += "\tAssembly Cost: ${self.test_assembly_cost:.2f};\n".format(self=self)
+        self.assertEqual(expected, str(self.es))
 
 
 if __name__ == "__main__":
