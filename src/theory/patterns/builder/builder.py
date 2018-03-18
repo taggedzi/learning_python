@@ -213,21 +213,23 @@ class CellPhone(object):
 
     @property
     def total_price(self):
-        if self.__price is None:
-            total = self.get_price(self.circuit_board)
-            total += self.get_price(self.cellular_module)
-            total += self.get_price(self.battery)
-            total += self.get_price(self.speakers)
-            total += self.get_price(self.screen)
-            total += self.get_price(self.external_shell)
-            self.__price = total
-        else:
-            total = self.__price
+        total = self.get_price(self.circuit_board)
+        total += self.get_price(self.cellular_module)
+        total += self.get_price(self.battery)
+        total += self.get_price(self.speakers)
+        total += self.get_price(self.screen)
+        total += self.get_price(self.external_shell)
+        self.__price = total
         return total
 
     @property
     def assembled_price(self):
-        return self.total_price + self.external_shell.assembly_cost
+        assembly_cost = 0.0
+        try:
+            assembly_cost = self.external_shell.assembly_cost
+        except AttributeError as _:
+            pass
+        return self.total_price + assembly_cost
 
     @property
     def passive_battery_duration(self):
