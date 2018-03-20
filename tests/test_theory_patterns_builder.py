@@ -10,6 +10,9 @@ from src.theory.patterns.builder.builder import Battery
 from src.theory.patterns.builder.builder import Speakers
 from src.theory.patterns.builder.builder import Screen
 from src.theory.patterns.builder.builder import ExternalShell
+from src.theory.patterns.builder.builder import Director
+from src.theory.patterns.builder.builder import MeFone12
+from src.theory.patterns.builder.builder import BirdSungT8
 
 
 class ComponentTestClassEmpty(object):
@@ -660,6 +663,189 @@ class TestExternalShell(unittest.TestCase):
         expected += "\tPrice: ${self.test_price:.2f} USD;\n".format(self=self)
         expected += "\tAssembly Cost: ${self.test_assembly_cost:.2f};\n".format(self=self)
         self.assertEqual(expected, str(self.es))
+
+
+class MockBuilder(object):
+    mfg = "test_mfg"
+    model = "test_model"
+
+    def build_circuit_board(self):
+        return "test_circuit_board"
+
+    def build_cellular_module(self):
+        return "test_cellular_module"
+
+    def build_battery(self):
+        return "test_battery"
+
+    def build_speakers(self):
+        return "test_speakers"
+
+    def build_screen(self):
+        return "test_screen"
+
+    def build_external_shell(self):
+        return "test_external_shell"
+
+
+class TestDirector(unittest.TestCase):
+
+    def test_build_phone(self):
+        d = Director()
+        d.set_builder(MockBuilder())
+        phone = d.build_phone()
+        self.assertEqual("test_mfg", phone.mfg)
+        self.assertEqual("test_model", phone.model)
+        self.assertEqual("test_circuit_board", phone.circuit_board)
+        self.assertEqual("test_cellular_module", phone.cellular_module)
+        self.assertEqual("test_battery", phone.battery)
+        self.assertEqual("test_speakers", phone.speakers)
+        self.assertEqual("test_screen", phone.screen)
+        self.assertEqual("test_external_shell", phone.external_shell)
+
+
+class TestMeFone12(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestMeFone12, self).__init__(*args, **kwargs)
+        self.mf = None
+
+    def setUp(self):
+        self.mf = MeFone12()
+
+    def test_init(self):
+        self.assertEqual("NBD", self.mf.mfg)
+        self.assertEqual("MeFone12", self.mf.model)
+
+    def test_build_circuit_board(self):
+        cb = self.mf.build_circuit_board()
+        self.assertEqual('MRL-0032', cb.model)
+        self.assertEqual('1.3.7a', cb.revision)
+        self.assertEqual(.127, cb.active_draw)
+        self.assertEqual(0.018, cb.passive_draw)
+        self.assertEqual(98.79, cb.price)
+
+    def test_build_cellular_module(self):
+        cm = self.mf.build_cellular_module()
+        self.assertEqual('Kellog', cm.manufacturer)
+        self.assertEqual('ARNIL-3', cm.make)
+        self.assertEqual(['3G', '4G', 'LTE'], cm.bands)
+        self.assertEqual(0.118, cm.active_draw)
+        self.assertEqual(0.006, cm.passive_draw)
+        self.assertEqual(75.33, cm.price)
+
+    def test_build_battery(self):
+        b = self.mf.build_battery()
+        self.assertEqual('M-004', b.form_factor)
+        self.assertEqual('NiCAD', b.battery_type)
+        self.assertEqual(8, b.storage_capacity)
+        self.assertEqual(250, b.charge_cycles)
+        self.assertEqual(5.38, b.price)
+
+    def test_build_speakers(self):
+        s = self.mf.build_speakers()
+        self.assertEqual('Lanteek', s.brand)
+        self.assertEqual('35 - 21 kHz', s.response_frequency)
+        self.assertEqual(4, s.impedance)
+        self.assertEqual(0.2, s.active_draw)
+        self.assertEqual(0, s.passive_draw)
+        self.assertEqual(5.00, s.price)
+
+    def test_build_screen(self):
+        s = self.mf.build_screen()
+        self.assertEqual(158.4, s.height)
+        self.assertEqual(78.1, s.width)
+        self.assertEqual(17.78, s.pixels_per_mm)
+        self.assertEqual(round(s.height * s.pixels_per_mm), s.height_pixels)
+        self.assertEqual(round(s.width * s.pixels_per_mm), s.width_pixels)
+        self.assertEqual(60, s.refresh_rate)
+        self.assertEqual(0.3, s.passive_draw)
+        self.assertEqual(0.68, s.active_draw)
+        self.assertEqual(65.88, s.price)
+
+    def test_build_external_shell(self):
+        es = self.mf.build_external_shell()
+        self.assertEqual('Aluminum', es.material)
+        self.assertEqual(158.9, es.height)
+        self.assertEqual(85.1, es.width)
+        self.assertEqual(0.4, es.depth)
+        self.assertEqual('3 ft.', es.drop_resistance_rating)
+        self.assertEqual(12.10, es.assembly_cost)
+        self.assertEqual(False, es.is_water_proof)
+        self.assertEqual(False, es.is_dust_sand_proof)
+        self.assertEqual(6.12, es.price)
+
+
+class TestBirdSungT8(unittest.TestCase):
+
+    def __init__(self, *args, **kwargs):
+        super(TestBirdSungT8, self).__init__(*args, **kwargs)
+        self.bs8 = None
+
+    def setUp(self):
+        self.bs8 = BirdSungT8()
+
+    def test_init(self):
+        self.assertEqual("Birdsung", self.bs8.mfg)
+        self.assertEqual("T8", self.bs8.model)
+
+    def test_build_circuit_board(self):
+        cb = self.bs8.build_circuit_board()
+        self.assertEqual('Cobalt', cb.model)
+        self.assertEqual('2.0.4', cb.revision)
+        self.assertEqual(.117, cb.active_draw)
+        self.assertEqual(0.021, cb.passive_draw)
+        self.assertEqual(78.21, cb.price)
+
+    def test_build_cellular_module(self):
+        cm = self.bs8.build_cellular_module()
+        self.assertEqual('LuckySnaps', cm.manufacturer)
+        self.assertEqual('VINA99', cm.make)
+        self.assertEqual(['3G', '4G', 'CDMA', 'FDMA', 'EVDO3'], cm.bands)
+        self.assertEqual(0.21, cm.active_draw)
+        self.assertEqual(0.008, cm.passive_draw)
+        self.assertEqual(72.63, cm.price)
+
+    def test_build_battery(self):
+        b = self.bs8.build_battery()
+        self.assertEqual('DNN0', b.form_factor)
+        self.assertEqual('Lion', b.battery_type)
+        self.assertEqual(7.8, b.storage_capacity)
+        self.assertEqual(500, b.charge_cycles)
+        self.assertEqual(10.12, b.price)
+
+    def test_build_speakers(self):
+        s = self.bs8.build_speakers()
+        self.assertEqual('SpiffySoundTek', s.brand)
+        self.assertEqual('28 - 22kHz', s.response_frequency)
+        self.assertEqual(4, s.impedance)
+        self.assertEqual(0.2, s.active_draw)
+        self.assertEqual(0, s.passive_draw)
+        self.assertEqual(5.00, s.price)
+
+    def test_build_screen(self):
+        s = self.bs8.build_screen()
+        self.assertEqual(154.00, s.height)
+        self.assertEqual(72.4, s.width)
+        self.assertEqual(14, s.pixels_per_mm)
+        self.assertEqual(round(s.height * s.pixels_per_mm), s.height_pixels)
+        self.assertEqual(round(s.width * s.pixels_per_mm), s.width_pixels)
+        self.assertEqual(60, s.refresh_rate)
+        self.assertEqual(0.1, s.passive_draw)
+        self.assertEqual(0.71, s.active_draw)
+        self.assertEqual(55.69, s.price)
+
+    def test_build_external_shell(self):
+        es = self.bs8.build_external_shell()
+        self.assertEqual('ABS', es.material)
+        self.assertEqual(160, es.height)
+        self.assertEqual(78, es.width)
+        self.assertEqual(0.38, es.depth)
+        self.assertEqual('1.2 ft.', es.drop_resistance_rating)
+        self.assertEqual(8.10, es.assembly_cost)
+        self.assertEqual(False, es.is_water_proof)
+        self.assertEqual(True, es.is_dust_sand_proof)
+        self.assertEqual(1.20, es.price)
 
 
 if __name__ == "__main__":

@@ -553,7 +553,7 @@ class BirdSungT8(BuilderInterface):
         return ExternalShell('ABS', 160, 78, .38, '1.2 ft.', 8.10, False, True, 1.20)
 
 
-def main():
+def main():  # pragma: no cover
     d = Director()
 
     d.set_builder(MeFone12())
@@ -567,6 +567,6 @@ def main():
     print(bird_sung_t8)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     # execute only if run as a script
     main()
